@@ -110,7 +110,7 @@ const Register = () => {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-lg opacity-60 hover:opacity-100">
+                className="absolute right-3 top-1/2 cursor-pointer -translate-y-1/2 text-lg opacity-60 hover:opacity-100">
                 {showPassword ? <EyeClosed /> : <Eye />}
               </button>
             </div>
