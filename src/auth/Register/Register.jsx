@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 
 import { Link } from "react-router";
 import { Eye, EyeClosed } from "lucide-react";
+import SocialLogin from "../SocialLogin/SocialLogin";
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -141,6 +142,8 @@ const Register = () => {
         </form>
 
         <div className="divider my-6">OR</div>
+
+        <SocialLogin />
       </div>
     </div>
   );
