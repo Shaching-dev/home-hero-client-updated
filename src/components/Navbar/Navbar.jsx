@@ -2,14 +2,48 @@ import React from "react";
 import { Link, NavLink } from "react-router";
 import Logo from "../Logo/Logo";
 import Container from "../Container/Container";
+import {
+  CalendarCheck2,
+  ClipboardList,
+  MessageCirclePlus,
+  User,
+  Wrench,
+} from "lucide-react";
 
 const Navbar = () => {
   const links = (
     <>
-      <NavLink to="/services">Services</NavLink>
-      <NavLink to="/add-services">Create Service</NavLink>
-      <NavLink to="/my-bookings">My Bookings</NavLink>
-      <NavLink to="/my-services">My Services</NavLink>
+      <div>
+        <NavLink className="flex items-center" to="/services">
+          <Wrench size={25} />
+          Services
+        </NavLink>
+      </div>
+      <div>
+        <NavLink className={`flex items-center`} to="/add-services">
+          <MessageCirclePlus size={25} />
+          Create Service
+        </NavLink>
+      </div>
+      <div>
+        <NavLink className={`flex items-center`} to="/my-bookings">
+          <CalendarCheck2 size={25} />
+          My Bookings
+        </NavLink>
+      </div>
+      <div>
+        <NavLink className={`flex items-center`} to="/my-services">
+          <ClipboardList size={25} />
+          My Services
+        </NavLink>
+      </div>
+
+      <div>
+        <NavLink className={`flex items-center`} to="/profile">
+          <User size={25} />
+          Profile
+        </NavLink>
+      </div>
     </>
   );
 
@@ -39,7 +73,7 @@ const Navbar = () => {
 
               <ul
                 tabIndex={0}
-                className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+                className="menu menu-sm dropdown-content gap-5 mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
                 {links}
               </ul>
             </div>

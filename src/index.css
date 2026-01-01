@@ -13,3 +13,8 @@ body {
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
 }
+
+.active {
+  color: #2563eb;
+  font-weight: bold;
+}

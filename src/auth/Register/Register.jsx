@@ -1,14 +1,15 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { Link } from "react-router";
 import { Eye, EyeClosed } from "lucide-react";
 import SocialLogin from "../SocialLogin/SocialLogin";
+import useAuth from "../../hooks/useAuth/useAuth";
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
-
-  const fileRef = useRef();
+  const { registerUser } = useAuth();
+  // const fileRef = useRef();
 
   const passwordPattern =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}[\]:;<>,.?~\-=/\\]).{6,}$/;
@@ -21,6 +22,13 @@ const Register = () => {
 
   const handleRegister = (data) => {
     console.log(data);
+    registerUser(data.email, data.password)
+      .then((result) => {
+        console.log(result.user);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -41,7 +49,7 @@ const Register = () => {
               <img src={userImg} alt="Upload" className="w-10 opacity-70" />
             </div> */}
 
-            <p className="text-xs mt-2 opacity-60">Upload profile photo</p>
+            {/* <p className="text-xs mt-2 opacity-60">Upload profile photo</p>
 
             <input
               {...register("photo", { required: true })}
@@ -57,10 +65,10 @@ const Register = () => {
               <p className="text-error text-sm mt-1">
                 Profile photo is required
               </p>
-            )}
+            )} */}
           </div>
 
-          <div>
+          {/* <div>
             <label className="label">
               <span className="label-text font-medium">Name</span>
             </label>
@@ -73,7 +81,7 @@ const Register = () => {
             {errors.name && (
               <p className="text-error text-sm mt-1">Name is required</p>
             )}
-          </div>
+          </div> */}
 
           <div>
             <label className="label">
@@ -115,9 +123,13 @@ const Register = () => {
               </button>
             </div>
 
-            {errors.password && (
+            {errors.password?.type === "required" && (
+              <p className="text-error text-sm mt-1">Password is required</p>
+            )}
+            {errors.password?.type === "pattern" && (
               <p className="text-error text-sm mt-1">
-                Password must be strong & at least 6 characters
+                Password is must be 6 characters and must have one uppercas, one
+                lowercase, one number and sone special charcter
               </p>
             )}
           </div>
@@ -132,13 +144,7 @@ const Register = () => {
             </Link>
           </p>
 
-          {/* <button
-            disabled={loading}
-            className={`btn btn-primary w-full rounded-full text-base ${
-              loading ? "loading" : ""
-            }`}>
-            {loading ? "Registering..." : "Register"}
-          </button> */}
+          <button className="btn btn-primary w-full">Register</button>
         </form>
 
         <div className="divider my-6">OR</div>

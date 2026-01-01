@@ -4,8 +4,10 @@ import { useForm } from "react-hook-form";
 import { Link } from "react-router";
 import { Eye, EyeClosed, HousePlug } from "lucide-react";
 import SocialLogin from "../SocialLogin/SocialLogin";
+import useAuth from "../../hooks/useAuth/useAuth";
 
 const Login = () => {
+  const { signInUserWithEmail } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const passwordPattern =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}[\]:;<>,.?~\-=/\\]).{6,}$/;
@@ -17,7 +19,14 @@ const Login = () => {
   } = useForm();
 
   const handleRegister = (data) => {
-    console.log(data);
+    // console.log(data);
+    signInUserWithEmail(data.email, data.password)
+      .then((result) => {
+        console.log(result.user);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
