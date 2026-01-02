@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router";
 import Logo from "../Logo/Logo";
 import Container from "../Container/Container";
@@ -13,6 +13,21 @@ import useAuth from "../../hooks/useAuth/useAuth";
 
 const Navbar = () => {
   const { user, userSignOut } = useAuth();
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 10) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const links = (
     <>
@@ -64,9 +79,17 @@ const Navbar = () => {
   };
 
   return (
-    <div className="bg-stone-100 py-4">
+    <div
+      className={`
+        sticky w-full z-50 top-0 transition-all duration-500 
+        ${
+          scrolled
+            ? "bg-gray-300 shadow-lg py-3 translate-y-2"
+            : "bg-transparent py-4 translate-y-0"
+        }
+      `}>
       <Container>
-        <div className="navbar flex flex-wrap items-center justify-between bg-white shadow-md rounded-xl px-4 py-2">
+        <div className="navbar flex flex-wrap items-center justify-between bg-white shadow-md rounded-xl  py-2">
           {/* START */}
           <div className="flex items-center gap-2">
             {/* Mobile menu */}

@@ -1,17 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import useAuth from "../../hooks/useAuth/useAuth";
 import { useLocation, useNavigate } from "react-router";
+import { HashLoader } from "react-spinners";
 
 const SocialLogin = () => {
+  const [btnLoading, setBtnLoading] = useState(false);
   const { signInWithGoogle } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const handleSignInWithGoogle = () => {
+    setBtnLoading(true);
+
     signInWithGoogle()
       .then((result) => {
         console.log(result.user);
-        navigate(location?.state || "/");
+        setTimeout(() => {
+          navigate(location?.state || "/");
+        }, 1000);
       })
+
       .catch((error) => {
         console.log(error);
       });
@@ -19,6 +26,14 @@ const SocialLogin = () => {
 
   return (
     <div>
+      {btnLoading && (
+        <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center">
+          <div className="flex items-center">
+            <span className="text-3xl text-primary font-bold">Loading...</span>
+            <HashLoader size={70} color="#3b82f6" />
+          </div>
+        </div>
+      )}
       <button
         onClick={handleSignInWithGoogle}
         className="btn bg-white text-black w-full border-[#e5e5e5]">

@@ -1,182 +1,177 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useLocation } from "react-router";
-import { Drama, Eye, EyeClosed } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router";
+import { Eye, EyeClosed } from "lucide-react";
+import axios from "axios";
+import { HashLoader } from "react-spinners";
+
 import SocialLogin from "../SocialLogin/SocialLogin";
 import useAuth from "../../hooks/useAuth/useAuth";
-import axios from "axios";
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [btnLoading, setBtnLoading] = useState(false);
+  const [preview, setPreview] = useState(null);
+
   const { registerUser, updateUserProfile } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const passwordPattern =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}[\]:;<>,.?~\-=/\\]).{6,}$/;
 
   const {
-    handleSubmit,
     register,
+    handleSubmit,
     watch,
     formState: { errors },
   } = useForm();
 
-  // Profile photo preview
-  const [preview, setPreview] = useState(null);
-  const file = watch("profilePhoto");
+  const photoFile = watch("profilePhoto");
 
+  /* ---------- Image Preview ---------- */
   useEffect(() => {
-    if (file && file[0]) {
-      const objectUrl = URL.createObjectURL(file[0]);
-      setPreview(objectUrl);
-      return () => URL.revokeObjectURL(objectUrl);
+    if (photoFile && photoFile[0]) {
+      const url = URL.createObjectURL(photoFile[0]);
+      setPreview(url);
+      return () => URL.revokeObjectURL(url);
     }
-  }, [file]);
+  }, [photoFile]);
 
+  /* ---------- Register Handler ---------- */
   const handleRegister = (data) => {
-    const profileImg = data.profilePhoto[0];
+    setBtnLoading(true);
 
-    // const payload = {
-    //   ...data,
-    //   imageName: profileImg.name,
-    // };
+    const imageFile = data.profilePhoto[0];
+    const formData = new FormData();
+    formData.append("image", imageFile);
 
-    // console.log(payload);
+    const imageAPI = `https://api.imgbb.com/1/upload?key=${
+      import.meta.env.VITE_image_api_key
+    }`;
 
     registerUser(data.email, data.password)
-      .then((result) => {
-        console.log(result.user);
-        const formData = new FormData();
-        formData.append("image", profileImg);
-        const image_API_URL = `https://api.imgbb.com/1/upload?key=${
-          import.meta.env.VITE_image_api_key
-        }`;
-        axios.post(image_API_URL, formData).then((res) => {
-          // console.log("after image upload", res.data.data.url);
-          const photoURL = res.data.data.url;
-          const userProfile = {
-            displayName: data.name,
-            photoURL: photoURL,
-          };
-          // update user profile
-
-          updateUserProfile(userProfile)
-            .then(() => {
-              console.log("updated");
-            })
-            .catch((error) => {
-              console.log(error);
-            });
+      .then(() => axios.post(imageAPI, formData))
+      .then((res) => {
+        const photoURL = res.data.data.url;
+        return updateUserProfile({
+          displayName: data.name,
+          photoURL,
         });
       })
+
+      .then(() => {
+        navigate(location?.state || "/");
+      })
       .catch((error) => {
-        console.log(error);
+        console.error("Registration Error:", error);
+      })
+      .finally(() => {
+        setBtnLoading(false);
       });
   };
 
   return (
-    <div className="flex items-center justify-center px-4 py-10 min-h-screen">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl p-8">
+    <div className="min-h-screen flex items-center justify-center px-4 relative">
+      {/* Fullscreen Loader */}
+      {btnLoading && (
+        <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center">
+          <div className="flex items-center">
+            <span className="text-3xl text-primary font-bold">Loading...</span>
+            <HashLoader size={70} color="#3b82f6" />
+          </div>
+        </div>
+      )}
+
+      <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-2xl">
         {/* Header */}
         <div className="text-center mb-6">
           <h2 className="text-3xl font-bold text-primary">Create an Account</h2>
-          <p className="text-sm opacity-70 mt-1">
+          <p className="text-sm opacity-70">
             Join <span className="font-semibold">StyleDecor</span> today
           </p>
         </div>
 
-        <form onSubmit={handleSubmit(handleRegister)} className="space-y-4">
+        <form
+          onSubmit={handleSubmit(handleRegister)}
+          className={`space-y-4 ${
+            btnLoading ? "opacity-60 pointer-events-none" : ""
+          }`}>
           {/* Profile Photo */}
           <div className="flex flex-col items-center">
             <label className="cursor-pointer">
-              <div className="w-32 h-32 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden border border-gray-300">
+              <div className="w-32 h-32 rounded-full bg-gray-200 border overflow-hidden flex items-center justify-center">
                 {preview ? (
                   <img
                     src={preview}
-                    alt="Profile Preview"
+                    alt="Preview"
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <span className="text-gray-500 text-sm">Select Photo</span>
+                  <span className="text-sm text-gray-500">Select Photo</span>
                 )}
               </div>
               <input
                 type="file"
                 accept="image/*"
-                {...register("profilePhoto")}
+                {...register("profilePhoto", { required: true })}
                 className="hidden"
               />
             </label>
-
             {errors.profilePhoto && (
               <p className="text-error text-sm mt-1">Photo is required</p>
             )}
           </div>
 
-          {/* name  */}
-
+          {/* Name */}
           <div>
-            <label className="label">
-              <span className="label-text font-medium">Name</span>
-            </label>
+            <label className="label-text font-medium">Name</label>
             <input
               {...register("name", { required: true })}
-              type="text"
-              placeholder="@shaching...."
-              className="input input-bordered w-full focus:border-primary"
+              className="input input-bordered w-full"
+              placeholder="Your name"
             />
             {errors.name && (
-              <p className="text-error text-sm mt-1">Name is required</p>
+              <p className="text-error text-sm">Name is required</p>
             )}
           </div>
 
           {/* Email */}
           <div>
-            <label className="label">
-              <span className="label-text font-medium">Email</span>
-            </label>
+            <label className="label-text font-medium">Email</label>
             <input
-              {...register("email", { required: true })}
               type="email"
+              {...register("email", { required: true })}
+              className="input input-bordered w-full"
               placeholder="you@example.com"
-              className="input input-bordered w-full focus:border-primary"
             />
             {errors.email && (
-              <p className="text-error text-sm mt-1">Email is required</p>
+              <p className="text-error text-sm">Email is required</p>
             )}
           </div>
 
           {/* Password */}
           <div>
-            <label className="label">
-              <span className="label-text font-medium">Password</span>
-            </label>
+            <label className="label-text font-medium">Password</label>
             <div className="relative">
               <input
+                type={showPassword ? "text" : "password"}
                 {...register("password", {
                   required: true,
-                  minLength: 6,
                   pattern: passwordPattern,
                 })}
-                type={showPassword ? "text" : "password"}
+                className="input input-bordered w-full pr-12"
                 placeholder="••••••••"
-                className="input input-bordered w-full pr-12 focus:border-primary"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 cursor-pointer -translate-y-1/2 text-lg opacity-60 hover:opacity-100">
+                className="absolute right-3 top-1/2 -translate-y-1/2 opacity-60">
                 {showPassword ? <EyeClosed /> : <Eye />}
               </button>
             </div>
-            {errors.password?.type === "required" && (
-              <p className="text-error text-sm mt-1">Password is required</p>
-            )}
-            {errors.password?.type === "pattern" && (
-              <p className="text-error text-sm mt-1">
-                Password must be at least 6 characters, contain uppercase,
-                lowercase, number, and a special character
-              </p>
+            {errors.password && (
+              <p className="text-error text-sm">Strong password required</p>
             )}
           </div>
 
@@ -186,16 +181,16 @@ const Register = () => {
             <Link
               to="/login"
               state={location.state}
-              className="text-primary font-semibold hover:underline">
+              className="text-primary font-semibold">
               Login
             </Link>
           </p>
 
-          {/* Register Button */}
+          {/* Submit */}
+
           <button className="btn btn-primary w-full">Register</button>
         </form>
 
-        {/* Social Login */}
         <div className="divider my-6">OR</div>
         <SocialLogin />
       </div>

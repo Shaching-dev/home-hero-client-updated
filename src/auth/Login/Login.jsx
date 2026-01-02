@@ -5,8 +5,10 @@ import { Link, useLocation, useNavigate } from "react-router";
 import { Eye, EyeClosed, HousePlug } from "lucide-react";
 import SocialLogin from "../SocialLogin/SocialLogin";
 import useAuth from "../../hooks/useAuth/useAuth";
+import { HashLoader } from "react-spinners";
 
 const Login = () => {
+  const [btnLoading, setBtnLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { signInUserWithEmail } = useAuth();
@@ -20,15 +22,22 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-  const handleRegister = (data) => {
+  const handleSignInUser = (data) => {
     // console.log(data);
+    setBtnLoading(true);
+
     signInUserWithEmail(data.email, data.password)
       .then((result) => {
         console.log(result.user);
-        navigate(location?.state || "/");
+        setTimeout(() => {
+          navigate(location?.state || "/");
+        }, 1000);
       })
       .catch((error) => {
         console.log(error);
+      })
+      .finally(() => {
+        setBtnLoading(false);
       });
   };
 
@@ -45,7 +54,7 @@ const Login = () => {
           </p> */}
         </div>
 
-        <form onSubmit={handleSubmit(handleRegister)} className="space-y-4">
+        <form onSubmit={handleSubmit(handleSignInUser)} className="space-y-4">
           <div>
             <label className="label">
               <span className="label-text font-medium">Email</span>
@@ -102,7 +111,16 @@ const Login = () => {
               Register
             </Link>
           </p>
-
+          {btnLoading && (
+            <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center">
+              <div className="flex items-center">
+                <span className="text-3xl text-primary font-bold">
+                  Loading...
+                </span>
+                <HashLoader size={70} color="#3b82f6" />
+              </div>
+            </div>
+          )}
           <button className="btn btn-primary w-full">Login</button>
         </form>
 

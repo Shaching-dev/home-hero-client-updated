@@ -1,9 +1,10 @@
 import React from "react";
+import FirstHero from "../HeroSection/FirstHero";
 
 const Home = () => {
   return (
-    <div>
-      <h3>Home</h3>
+    <div className="my-10">
+      <FirstHero />
     </div>
   );
 };
