@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-
 import { useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../hooks/useAxiosSecure/useAxiosSecure";
@@ -51,7 +50,7 @@ const ServiceDetails = () => {
   if (isError) {
     return (
       <div className="text-center py-20 text-red-500 font-semibold">
-        ❌ Failed to load service details. Please try again.
+        Failed to load service details. Please try again.
       </div>
     );
   }
@@ -59,14 +58,31 @@ const ServiceDetails = () => {
   const handleServiceBook = () => {
     modalRef.current.showModal();
   };
-  const handleBookSubmit = (data) => {
-    axiosSecure.post("/bookings", data).then((res) => {
+  const handleBookSubmit = (formData) => {
+    const bookingData = {
+      customerName: formData.name,
+      customerEmail: user.email,
+      customerPhone: formData.phone,
+
+      serviceId: service._id,
+      serviceName: service.serviceName,
+      serviceImage: service.imageUrl,
+      providerName: service.providerName,
+      providerEmail: service.email,
+
+      offeredPrice: formData.price,
+      details: formData.details,
+      status: "pending",
+      bookedAt: new Date(),
+    };
+
+    axiosSecure.post("/bookings", bookingData).then((res) => {
       if (res.data.insertedId) {
         Swal.fire({
           title: "Successfully Booked!",
           icon: "success",
-          draggable: true,
         });
+
         modalRef.current.close();
         reset();
       }
