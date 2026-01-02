@@ -39,35 +39,35 @@ const Navbar = () => {
   const links = (
     <>
       <NavLink
-        className="flex items-center gap-2 px-3 py-2 rounded-md  transition"
+        className="flex items-center text-black gap-2 px-3 py-2 rounded-md  transition"
         to="/services">
         <Wrench size={22} />
         Services
       </NavLink>
 
       <NavLink
-        className="flex items-center gap-2 px-3 py-2 rounded-md  transition"
+        className="flex items-center gap-2 px-3 py-2 text-black rounded-md  transition"
         to="/add-services">
         <MessageCirclePlus size={22} />
         Create Service
       </NavLink>
 
       <NavLink
-        className="flex items-center gap-2 px-3 py-2 rounded-md  transition"
+        className="flex items-center gap-2 px-3 text-black py-2 rounded-md  transition"
         to="/my-bookings">
         <CalendarCheck2 size={22} />
         My Bookings
       </NavLink>
 
       <NavLink
-        className="flex items-center gap-2 px-3 py-2 rounded-md  transition"
+        className="flex items-center gap-2 px-3 text-black py-2 rounded-md  transition"
         to="/my-services">
         <ClipboardList size={22} />
         My Services
       </NavLink>
 
       <NavLink
-        className="flex items-center gap-2 px-3 py-2 rounded-md  transition"
+        className="flex items-center gap-2 px-3 text-black py-2 rounded-md  transition"
         to="/profile">
         <User size={22} />
         Profile
@@ -93,7 +93,7 @@ const Navbar = () => {
   return (
     <div
       className={`
-        sticky w-full z-50 top-0 transition-all duration-500 
+        sticky w-full z-50 top-0 bg-gray-200 transition-all duration-500 
         ${
           scrolled
             ? `shadow-2xs py-3 translate-y-2 `
@@ -162,17 +162,6 @@ const Navbar = () => {
             <ul
               tabIndex={0}
               className="menu menu-sm dropdown-content mt-3 px-5 py-3 shadow bg-base-100 rounded-box w-40  flex justify-center items-center">
-              {/* <li>
-                <a className="justify-between hover:bg-gray-100 rounded-md px-2 py-1">
-                  Profile
-                  <span className="badge">New</span>
-                </a>
-              </li>
-              <li>
-                <a className="hover:bg-gray-100 rounded-md px-2 py-1">
-                  Settings
-                </a>
-              </li> */}
               <li>
                 {user ? (
                   <button

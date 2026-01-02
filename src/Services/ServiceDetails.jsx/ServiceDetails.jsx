@@ -1,15 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+
 import { useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../hooks/useAxiosSecure/useAxiosSecure";
 import LoadingSpinner from "../../LoadingSpinner/LoadingSpinner";
 import Container from "../../components/Container/Container";
 import ServiceDetailsSkeleton from "../../Skeleton/ServiceDetailsSkeleton";
+import useAuth from "../../hooks/useAuth/useAuth";
+import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
 
 const ServiceDetails = () => {
+  const modalRef = useRef();
   const { id } = useParams();
+  const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const [showSkeleton, setShowSkeleton] = useState(true);
+
+  const {
+    handleSubmit,
+    formState: { errors },
+    register,
+    reset,
+  } = useForm();
+
   const {
     data: service,
     isLoading,
@@ -42,15 +56,27 @@ const ServiceDetails = () => {
     );
   }
 
-  const handleServiceBook = (id) => {
-    console.log("bboked", id);
+  const handleServiceBook = () => {
+    modalRef.current.showModal();
+  };
+  const handleBookSubmit = (data) => {
+    axiosSecure.post("/bookings", data).then((res) => {
+      if (res.data.insertedId) {
+        Swal.fire({
+          title: "Successfully Booked!",
+          icon: "success",
+          draggable: true,
+        });
+        modalRef.current.close();
+        reset();
+      }
+    });
   };
 
   return (
     <div className=" py-10 min-h-screen">
       <Container>
         {/* Changed max-w-md to max-w-3xl for a better balance */}
-
         {showSkeleton ? (
           <div className="grid grid-cols-1">
             {Array.from({ length: 10 }).map((_, index) => (
@@ -106,7 +132,7 @@ const ServiceDetails = () => {
                 {/* Action Button */}
                 <div className="mt-8">
                   <button
-                    onClick={() => handleServiceBook(service._id)}
+                    onClick={handleServiceBook}
                     className="btn btn-primary w-full md:w-auto px-12 rounded-xl shadow-lg shadow-primary/20 transition-all duration-300 hover:scale-105 active:scale-95">
                     Book Now
                   </button>
@@ -119,6 +145,116 @@ const ServiceDetails = () => {
           More details or reviews could go here...
         </div>
       </Container>
+
+      <div>
+        <dialog ref={modalRef} className="modal modal-bottom sm:modal-middle">
+          <div className="modal-box">
+            <h3 className="font-bold text-lg text-center">
+              Fill Your Details to Book
+            </h3>
+            <div>
+              <form
+                onSubmit={handleSubmit(handleBookSubmit)}
+                className="space-y-4">
+                {/* Name */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Full Name
+                  </label>
+                  <input
+                    {...register("name", { required: true })}
+                    type="text"
+                    defaultValue={user?.displayName}
+                    readOnly
+                    className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  />
+
+                  {errors.name?.type === "required" && (
+                    <p className="text-red-600">Name is Required</p>
+                  )}
+                </div>
+
+                {/* Email */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    {...register("email", { required: true })}
+                    defaultValue={user?.email}
+                    readOnly
+                    className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  />
+                </div>
+
+                {/* Phone Number */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Phone Number
+                  </label>
+                  <input
+                    {...register("phone", { required: true })}
+                    type="tel"
+                    placeholder="+880182...."
+                    className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  />
+
+                  {errors.phone?.type === "required" && (
+                    <p className="text-red-600">Phone number is Required</p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Your starting price
+                  </label>
+                  <input
+                    {...register("price", { required: true })}
+                    type="text"
+                    placeholder="price"
+                    className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  />
+
+                  {errors.price?.type === "required" && (
+                    <p className="text-red-600">This field is required</p>
+                  )}
+                </div>
+
+                {/* Additional Notes */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Additional Notes
+                  </label>
+                  <textarea
+                    {...register("details", { required: true })}
+                    placeholder="Any specific requirements..."
+                    className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    rows={3}></textarea>
+                  {errors.details?.type === "required" && (
+                    <p className="text-red-600">This field is required</p>
+                  )}
+                </div>
+
+                {/* Submit Button */}
+                <button
+                  type="submit"
+                  className="w-full cursor-pointer bg-indigo-500 text-white py-2 rounded-lg hover:bg-indigo-600 transition">
+                  Confirm Booking
+                </button>
+              </form>
+            </div>
+            <div className="">
+              <form method="dialog">
+                {/* if there is a button in form, it will close the modal */}
+                <button className="btn w-full my-5 text-white font-semibold bg-red-500">
+                  Cancel
+                </button>
+              </form>
+            </div>
+          </div>
+        </dialog>
+      </div>
     </div>
   );
 };
