@@ -14,6 +14,13 @@ import useAuth from "../../hooks/useAuth/useAuth";
 const Navbar = () => {
   const { user, userSignOut } = useAuth();
   const [scrolled, setScrolled] = useState(false);
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+
+  useEffect(() => {
+    const getHTML = document.querySelector("html");
+    getHTML.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,41 +39,46 @@ const Navbar = () => {
   const links = (
     <>
       <NavLink
-        className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-gray-100 transition"
+        className="flex items-center gap-2 px-3 py-2 rounded-md  transition"
         to="/services">
         <Wrench size={22} />
         Services
       </NavLink>
 
       <NavLink
-        className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-gray-100 transition"
+        className="flex items-center gap-2 px-3 py-2 rounded-md  transition"
         to="/add-services">
         <MessageCirclePlus size={22} />
         Create Service
       </NavLink>
 
       <NavLink
-        className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-gray-100 transition"
+        className="flex items-center gap-2 px-3 py-2 rounded-md  transition"
         to="/my-bookings">
         <CalendarCheck2 size={22} />
         My Bookings
       </NavLink>
 
       <NavLink
-        className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-gray-100 transition"
+        className="flex items-center gap-2 px-3 py-2 rounded-md  transition"
         to="/my-services">
         <ClipboardList size={22} />
         My Services
       </NavLink>
 
       <NavLink
-        className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-gray-100 transition"
+        className="flex items-center gap-2 px-3 py-2 rounded-md  transition"
         to="/profile">
         <User size={22} />
         Profile
       </NavLink>
     </>
   );
+
+  const handleTheme = (checked) => {
+    // console.log(checked);
+    setTheme(checked ? "dark" : "light");
+  };
 
   const handleSignOut = () => {
     userSignOut()
@@ -84,12 +96,12 @@ const Navbar = () => {
         sticky w-full z-50 top-0 transition-all duration-500 
         ${
           scrolled
-            ? "bg-gray-300 shadow-lg py-3 translate-y-2"
-            : "bg-transparent py-4 translate-y-0"
+            ? `shadow-2xs py-3 translate-y-2 `
+            : "py-4 translate-y-0 bg-transparent dark:bg-transparent"
         }
       `}>
       <Container>
-        <div className="navbar flex flex-wrap items-center justify-between bg-white shadow-md rounded-xl  py-2">
+        <div className="navbar flex flex-wrap items-center justify-between shadow-md rounded-xl  py-2">
           {/* START */}
           <div className="flex items-center gap-2">
             {/* Mobile menu */}
@@ -119,6 +131,15 @@ const Navbar = () => {
             {/* Logo */}
             <div className="flex items-center">
               <Logo />
+            </div>
+
+            <div>
+              <input
+                onChange={(e) => handleTheme(e.target.checked)}
+                type="checkbox"
+                defaultChecked={localStorage.getItem("theme") === "dark"}
+                className="toggle"
+              />
             </div>
           </div>
 

@@ -1,13 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 
 @import "tailwindcss";
-@plugin "daisyui";
-@plugin "daisyui/theme" {
-  name: "light";
-  default: true;
-  --color-primary: #2563eb;
-  --color-secondary: #10b981;
+@plugin "daisyui" {
+  themes: light --default, dark --prefersdark;
 }
+
+@custom-variant dark (&:where([data-theme=night], [data-theme=night] *));
 
 body {
   font-family: "Inter", sans-serif;

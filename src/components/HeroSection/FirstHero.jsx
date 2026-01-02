@@ -38,7 +38,7 @@ const FirstHero = () => {
 
               {/* Overlay text */}
               <div className="absolute inset-0 flex flex-col justify-center items-center text-white p-4">
-                <h2 className="text-lg md:text-3xl font-bold mb-2 text-white">
+                <h2 className="text-4xl md:text-3xl font-bold mb-2 text-white">
                   Welcome to HomeHero
                 </h2>
                 <p className="text-sm md:text-lg max-w-lg text-center text-white">
