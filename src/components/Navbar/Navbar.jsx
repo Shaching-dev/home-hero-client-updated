@@ -9,56 +9,72 @@ import {
   User,
   Wrench,
 } from "lucide-react";
+import useAuth from "../../hooks/useAuth/useAuth";
 
 const Navbar = () => {
+  const { user, userSignOut } = useAuth();
+
   const links = (
     <>
-      <div>
-        <NavLink className="flex items-center" to="/services">
-          <Wrench size={25} />
-          Services
-        </NavLink>
-      </div>
-      <div>
-        <NavLink className={`flex items-center`} to="/add-services">
-          <MessageCirclePlus size={25} />
-          Create Service
-        </NavLink>
-      </div>
-      <div>
-        <NavLink className={`flex items-center`} to="/my-bookings">
-          <CalendarCheck2 size={25} />
-          My Bookings
-        </NavLink>
-      </div>
-      <div>
-        <NavLink className={`flex items-center`} to="/my-services">
-          <ClipboardList size={25} />
-          My Services
-        </NavLink>
-      </div>
+      <NavLink
+        className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-gray-100 transition"
+        to="/services">
+        <Wrench size={22} />
+        Services
+      </NavLink>
 
-      <div>
-        <NavLink className={`flex items-center`} to="/profile">
-          <User size={25} />
-          Profile
-        </NavLink>
-      </div>
+      <NavLink
+        className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-gray-100 transition"
+        to="/add-services">
+        <MessageCirclePlus size={22} />
+        Create Service
+      </NavLink>
+
+      <NavLink
+        className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-gray-100 transition"
+        to="/my-bookings">
+        <CalendarCheck2 size={22} />
+        My Bookings
+      </NavLink>
+
+      <NavLink
+        className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-gray-100 transition"
+        to="/my-services">
+        <ClipboardList size={22} />
+        My Services
+      </NavLink>
+
+      <NavLink
+        className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-gray-100 transition"
+        to="/profile">
+        <User size={22} />
+        Profile
+      </NavLink>
     </>
   );
 
+  const handleSignOut = () => {
+    userSignOut()
+      .then(() => {
+        console.log("log out");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
-    <div className="bg-stone-200 py-5">
+    <div className="bg-stone-100 py-4">
       <Container>
-        <div className="navbar shadow-sm bg-white shadow-2xl rounded-2xl px-4">
+        <div className="navbar flex flex-wrap items-center justify-between bg-white shadow-md rounded-xl px-4 py-2">
           {/* START */}
-          <div className="navbar-start gap-2">
+          <div className="flex items-center gap-2">
             {/* Mobile menu */}
             <div className="dropdown md:hidden">
               <label tabIndex={0} className="btn btn-ghost btn-circle">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
+                  className="h-6 w-6"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor">
@@ -66,33 +82,69 @@ const Navbar = () => {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth="2"
-                    d="M4 6h16M4 12h16M4 18h7"
+                    d="M4 6h16M4 12h16M4 18h16"
                   />
                 </svg>
               </label>
-
               <ul
                 tabIndex={0}
-                className="menu menu-sm dropdown-content gap-5 mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+                className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52 space-y-2">
                 {links}
               </ul>
             </div>
 
-            {/* Logo (always here) */}
-            <Logo />
+            {/* Logo */}
+            <div className="flex items-center">
+              <Logo />
+            </div>
           </div>
 
-          {/* CENTER (Desktop only) */}
-          <div className="navbar-center hidden md:flex gap-3">{links}</div>
+          {/* CENTER - Desktop Links */}
+          <div className="hidden md:flex items-center gap-4">{links}</div>
 
-          {/* END */}
-          <div className="navbar-end gap-2">
-            <Link to={"/login"}>
-              <button className="btn btn-primary btn-sm">Sign in</button>
-            </Link>
-            <Link to={"/register"}>
-              <button className="btn btn-outline btn-sm">Sign out</button>
-            </Link>
+          {/* END - Avatar */}
+          <div className="dropdown dropdown-end">
+            <div
+              tabIndex={0}
+              className="btn btn-ghost btn-circle avatar border border-gray-200">
+              <div className="w-20 rounded-full">
+                {user ? (
+                  <img src={user?.photoURL} alt="user image" />
+                ) : (
+                  <p className="text-red-400">No User</p>
+                )}
+              </div>
+            </div>
+            <ul
+              tabIndex={0}
+              className="menu menu-sm dropdown-content mt-3 px-5 py-3 shadow bg-base-100 rounded-box w-40  flex justify-center items-center">
+              {/* <li>
+                <a className="justify-between hover:bg-gray-100 rounded-md px-2 py-1">
+                  Profile
+                  <span className="badge">New</span>
+                </a>
+              </li>
+              <li>
+                <a className="hover:bg-gray-100 rounded-md px-2 py-1">
+                  Settings
+                </a>
+              </li> */}
+              <li>
+                {user ? (
+                  <button
+                    onClick={handleSignOut}
+                    className="btn btn-sm bg-red-600 text-white">
+                    Sign out
+                  </button>
+                ) : (
+                  <Link to={"/login"}>
+                    <button className="btn btn-sm bg-primary text-white">
+                      Sign in
+                    </button>
+                  </Link>
+                )}
+              </li>
+            </ul>
           </div>
         </div>
       </Container>

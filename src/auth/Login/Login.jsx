@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { Eye, EyeClosed, HousePlug } from "lucide-react";
 import SocialLogin from "../SocialLogin/SocialLogin";
 import useAuth from "../../hooks/useAuth/useAuth";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const { signInUserWithEmail } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const passwordPattern =
@@ -23,6 +25,7 @@ const Login = () => {
     signInUserWithEmail(data.email, data.password)
       .then((result) => {
         console.log(result.user);
+        navigate(location?.state || "/");
       })
       .catch((error) => {
         console.log(error);

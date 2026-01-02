@@ -9,6 +9,7 @@ import AuthLayout from "../layout/AuthLayout/AuthLayout";
 import Login from "../auth/Login/Login";
 import Register from "../auth/Register/Register";
 import MyServices from "../Services/MyServices/MyServices";
+import PrivateRoute from "./PrivateRoute/PrivateRoute";
 
 export const router = createBrowserRouter([
   {
@@ -34,7 +35,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/my-bookings",
-        Component: MyBookings,
+        element: (
+          <PrivateRoute>
+            <MyBookings />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/profile",
