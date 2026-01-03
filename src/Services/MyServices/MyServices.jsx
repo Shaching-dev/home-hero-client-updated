@@ -7,7 +7,7 @@ import useAxiosSecure from "../../hooks/useAxiosSecure/useAxiosSecure";
 const MyServices = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
-  console.log(user.email);
+  // console.log(user.email);
 
   const {
     data = [],

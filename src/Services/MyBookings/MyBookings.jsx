@@ -7,7 +7,7 @@ import useAxiosSecure from "../../hooks/useAxiosSecure/useAxiosSecure";
 const MyBookings = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
-  console.log(user.email);
+  // console.log(user.email);
 
   const {
     data: myBookings = [],
@@ -19,7 +19,7 @@ const MyBookings = () => {
     enabled: !!user?.email,
 
     queryFn: async () => {
-      const res = await axiosSecure.get(`/bookings?email=${user?.email}`);
+      const res = await axiosSecure.get(`/my-bookings?email=${user?.email}`);
       return res.data;
     },
   });
