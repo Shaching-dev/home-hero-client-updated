@@ -81,7 +81,7 @@ const CreateServices = () => {
             text: "Service created successfully.",
             icon: "success",
           });
-          navigate("/my-services");
+          navigate("/dashboard/my-services");
           reset();
           setPreview(null);
         }

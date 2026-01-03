@@ -22,13 +22,13 @@ const testimonials = [
 
 const CustomerTestimonials = () => {
   return (
-    <section className="py-16 bg-blue-100 rounded-md">
+    <section className="py-16 rounded-md">
       <div className="max-w-6xl mx-auto px-6 text-center">
         <motion.h2
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-4xl font-bold mb-10 text-gray-800">
+          className="text-4xl font-bold mb-10">
           What Our Customers Say
         </motion.h2>
 
@@ -39,16 +39,14 @@ const CustomerTestimonials = () => {
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               transition={{ delay: i * 0.2 }}
-              className="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition">
+              className=" p-6 rounded-2xl shadow-lg hover:shadow-xl transition">
               <img
                 src={t.image}
                 alt={t.name}
                 className="w-20 h-20 rounded-full mx-auto mb-4 object-cover"
               />
-              <p className="text-gray-600 italic mb-3">"{t.text}"</p>
-              <h4 className="text-lg font-semibold text-gray-800">
-                — {t.name}
-              </h4>
+              <p className=" italic mb-3">"{t.text}"</p>
+              <h4 className="text-lg font-semibol">— {t.name}</h4>
             </motion.div>
           ))}
         </div>

@@ -29,6 +29,7 @@ const ServiceDetails = () => {
     isError,
   } = useQuery({
     queryKey: ["service-details", id],
+
     queryFn: async () => {
       const res = await axiosSecure.get(`/services/${id}`);
       return res.data;
@@ -87,6 +88,7 @@ const ServiceDetails = () => {
 
         modalRef.current.close();
         reset();
+        navigate("/dashboard/my-bookings");
       }
     });
   };

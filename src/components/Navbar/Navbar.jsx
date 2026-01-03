@@ -61,7 +61,7 @@ const Navbar = () => {
 
       <NavLink
         className="flex items-center gap-2 px-3 text-black py-2 rounded-md  transition"
-        to="/dashboard">
+        to="/dashboard/my-bookings">
         <LayoutDashboard />
         Dashboard
       </NavLink>

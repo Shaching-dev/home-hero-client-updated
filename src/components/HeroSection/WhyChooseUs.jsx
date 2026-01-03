@@ -22,13 +22,13 @@ const WhyChooseUs = () => {
   ];
 
   return (
-    <section className="py-16 bg-gradient-to-b from-gray-50 to-white">
+    <section className="py-16 ">
       <div className="max-w-6xl mx-auto px-6 text-center">
         <motion.h2
           initial={{ opacity: 0, y: -30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-4xl font-bold mb-10 text-gray-800">
+          className="text-4xl font-bold mb-10">
           Why Choose <span className="text-blue-500">HomeHero</span>?
         </motion.h2>
 
@@ -39,10 +39,10 @@ const WhyChooseUs = () => {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.2 }}
-              className="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition">
+              className=" p-6 rounded-2xl shadow-lg hover:shadow-xl transition">
               <div className="flex justify-center mb-4">{r.icon}</div>
               <h3 className="text-xl font-semibold mb-2">{r.title}</h3>
-              <p className="text-gray-600">{r.desc}</p>
+              <p className="">{r.desc}</p>
             </motion.div>
           ))}
         </div>

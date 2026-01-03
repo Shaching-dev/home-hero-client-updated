@@ -10,7 +10,7 @@ const MyServices = () => {
   console.log(user.email);
 
   const {
-    data = {},
+    data = [],
     isLoading,
     refetch,
   } = useQuery({
@@ -19,12 +19,12 @@ const MyServices = () => {
     enabled: !!user?.email,
 
     queryFn: async () => {
-      const res = await axiosSecure.get(`/services?email=${user?.email}`);
+      const res = await axiosSecure.get(`/my-services?email=${user?.email}`);
       return res.data;
     },
   });
 
-  const myServices = data.services || [];
+  const myServices = data || [];
   const handleCancel = (id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -47,11 +47,11 @@ const MyServices = () => {
   };
 
   if (isLoading) {
-    return <div className="text-center py-10">Loading your bookings...</div>;
+    return <div className="text-center py-10">Loading your services...</div>;
   }
 
   if (myServices.length === 0) {
-    return <div className="text-center py-10">You have no bookings yet.</div>;
+    return <div className="text-center py-10">You have no services yet.</div>;
   }
 
   return (
