@@ -9,13 +9,15 @@ const PopularServices = () => {
   const axiosSecure = useAxiosSecure();
   const [showSkeleton, setShowSkeleton] = useState(true);
 
-  const { data: services = [] } = useQuery({
+  const { data = {} } = useQuery({
     queryKey: ["popular-services"],
     queryFn: async () => {
-      const res = await axiosSecure.get("/services?popular=true&limit=10");
+      const res = await axiosSecure.get("/services?popular=true&limit=15");
       return res.data;
     },
   });
+
+  const services = data.services || [];
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -24,6 +26,8 @@ const PopularServices = () => {
 
     return () => clearTimeout(timer);
   }, []);
+
+  // console.log(services);
 
   return (
     <div>

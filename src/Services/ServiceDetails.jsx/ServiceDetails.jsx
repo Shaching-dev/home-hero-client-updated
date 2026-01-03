@@ -63,13 +63,11 @@ const ServiceDetails = () => {
       customerName: formData.name,
       customerEmail: user.email,
       customerPhone: formData.phone,
-
       serviceId: service._id,
       serviceName: service.serviceName,
       serviceImage: service.imageUrl,
       providerName: service.providerName,
       providerEmail: service.email,
-
       offeredPrice: formData.price,
       details: formData.details,
       status: "pending",

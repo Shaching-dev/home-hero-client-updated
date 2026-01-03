@@ -11,10 +11,12 @@ import Register from "../auth/Register/Register";
 import MyServices from "../Services/MyServices/MyServices";
 import PrivateRoute from "./PrivateRoute/PrivateRoute";
 import ServiceDetails from "../Services/ServiceDetails.jsx/ServiceDetails";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 export const router = createBrowserRouter([
   {
     path: "/",
+    hydrateFallbackElement: <LoadingSpinner />,
     Component: MainLayout,
     children: [
       {
@@ -32,12 +34,20 @@ export const router = createBrowserRouter([
       },
       {
         path: "/add-services",
-        Component: CreateServices,
+        element: (
+          <PrivateRoute>
+            <CreateServices />
+          </PrivateRoute>
+        ),
       },
 
       {
         path: "/my-services",
-        Component: MyServices,
+        element: (
+          <PrivateRoute>
+            <MyServices />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/my-bookings",
@@ -49,7 +59,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/profile",
-        Component: Profile,
+        element: (
+          <PrivateRoute>
+            <Profile />
+          </PrivateRoute>
+        ),
       },
     ],
   },
