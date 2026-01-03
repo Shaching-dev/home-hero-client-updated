@@ -12,6 +12,8 @@ import MyServices from "../Services/MyServices/MyServices";
 import PrivateRoute from "./PrivateRoute/PrivateRoute";
 import ServiceDetails from "../Services/ServiceDetails.jsx/ServiceDetails";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+import DashboardLayout from "../layout/DashboardLayout/DashboardLayout";
+import AboutUs from "../components/AboutUs/AboutUs";
 
 export const router = createBrowserRouter([
   {
@@ -42,28 +44,8 @@ export const router = createBrowserRouter([
       },
 
       {
-        path: "/my-services",
-        element: (
-          <PrivateRoute>
-            <MyServices />
-          </PrivateRoute>
-        ),
-      },
-      {
-        path: "/my-bookings",
-        element: (
-          <PrivateRoute>
-            <MyBookings />
-          </PrivateRoute>
-        ),
-      },
-      {
-        path: "/profile",
-        element: (
-          <PrivateRoute>
-            <Profile />
-          </PrivateRoute>
-        ),
+        path: "/about-us",
+        Component: AboutUs,
       },
     ],
   },
@@ -79,6 +61,32 @@ export const router = createBrowserRouter([
       {
         path: "/register",
         Component: Register,
+      },
+    ],
+  },
+
+  {
+    path: "/dashboard",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout />
+      </PrivateRoute>
+    ),
+
+    children: [
+      {
+        path: "my-bookings",
+        element: <MyBookings />,
+      },
+
+      {
+        path: "my-services",
+        element: <MyServices />,
+      },
+
+      {
+        path: "profile",
+        element: <Profile />,
       },
     ],
   },

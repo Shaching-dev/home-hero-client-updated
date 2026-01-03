@@ -3,9 +3,9 @@ import { Link, NavLink } from "react-router";
 import Logo from "../Logo/Logo";
 import Container from "../Container/Container";
 import {
-  CalendarCheck2,
-  ClipboardList,
+  LayoutDashboard,
   MessageCirclePlus,
+  Store,
   User,
   Wrench,
 } from "lucide-react";
@@ -53,30 +53,22 @@ const Navbar = () => {
       </NavLink>
 
       <NavLink
-        className="flex items-center gap-2 px-3 text-black py-2 rounded-md  transition"
-        to="/my-bookings">
-        <CalendarCheck2 size={22} />
-        My Bookings
+        className="flex items-center gap-2 px-3 py-2 text-black rounded-md  transition"
+        to="/about-us">
+        <Store size={22} />
+        About us
       </NavLink>
 
       <NavLink
         className="flex items-center gap-2 px-3 text-black py-2 rounded-md  transition"
-        to="/my-services">
-        <ClipboardList size={22} />
-        My Services
-      </NavLink>
-
-      <NavLink
-        className="flex items-center gap-2 px-3 text-black py-2 rounded-md  transition"
-        to="/profile">
-        <User size={22} />
-        Profile
+        to="/dashboard">
+        <LayoutDashboard />
+        Dashboard
       </NavLink>
     </>
   );
 
   const handleTheme = (checked) => {
-    // console.log(checked);
     setTheme(checked ? "dark" : "light");
   };
 
