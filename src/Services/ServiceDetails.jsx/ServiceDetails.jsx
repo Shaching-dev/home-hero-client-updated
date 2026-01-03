@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../hooks/useAxiosSecure/useAxiosSecure";
 import LoadingSpinner from "../../LoadingSpinner/LoadingSpinner";
@@ -15,7 +15,7 @@ const ServiceDetails = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const [showSkeleton, setShowSkeleton] = useState(true);
-
+  const navigate = useNavigate();
   const {
     handleSubmit,
     formState: { errors },
@@ -56,7 +56,11 @@ const ServiceDetails = () => {
   }
 
   const handleServiceBook = () => {
-    modalRef.current.showModal();
+    if (!user) {
+      navigate("/login");
+    } else {
+      modalRef.current.showModal();
+    }
   };
   const handleBookSubmit = (formData) => {
     const bookingData = {
