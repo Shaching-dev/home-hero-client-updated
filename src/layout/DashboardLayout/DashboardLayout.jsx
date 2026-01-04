@@ -3,19 +3,17 @@ import { FaHistory, FaHome } from "react-icons/fa";
 import { TbBrandBooking } from "react-icons/tb";
 import { NavLink, Outlet } from "react-router";
 
-import { FaPaintbrush } from "react-icons/fa6";
-
-import { GrUserManager } from "react-icons/gr";
-import { IoIosPersonAdd } from "react-icons/io";
-import { GoTasklist } from "react-icons/go";
 import { CgProfile } from "react-icons/cg";
 import { AiFillCheckCircle } from "react-icons/ai";
 import { FiTrendingUp } from "react-icons/fi";
 import { MdPayment, MdPayments, MdRequestQuote } from "react-icons/md";
 import Container from "../../components/Container/Container";
-import { ClipboardList } from "lucide-react";
+import { ClipboardList, ShieldUser } from "lucide-react";
+import useRole from "../../hooks/useRole/useRole";
 
 const DashboardLayout = () => {
+  const { role } = useRole();
+
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
   useEffect(() => {
     const getHTML = document.querySelector("html");
@@ -26,6 +24,8 @@ const DashboardLayout = () => {
   const handleTheme = (checked) => {
     setTheme(checked ? "dark" : "light");
   };
+
+  console.log(role);
 
   return (
     <Container>
@@ -152,20 +152,39 @@ const DashboardLayout = () => {
                   </NavLink>
                 </li>
 
-                <li>
-                  <NavLink
-                    to="/dashboard/all-applications"
-                    className={({ isActive }) =>
-                      `flex items-center gap-3 p-3 rounded-lg transition-colors ${
-                        isActive
-                          ? "bg-blue-100 text-blue-700 font-semibold"
-                          : "hover:bg-gray-700 hover:text-white"
-                      }`
-                    }>
-                    <MdRequestQuote size={22} />
-                    <span>All Applications</span>
-                  </NavLink>
-                </li>
+                {role === "admin" && (
+                  <>
+                    <li>
+                      <NavLink
+                        to="/dashboard/all-applications"
+                        className={({ isActive }) =>
+                          `flex items-center gap-3 p-3 rounded-lg transition-colors ${
+                            isActive
+                              ? "bg-blue-100 text-blue-700 font-semibold"
+                              : "hover:bg-gray-700 hover:text-white"
+                          }`
+                        }>
+                        <MdRequestQuote size={22} />
+                        <span>All Applications</span>
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink
+                        to="/dashboard/users-management"
+                        className={({ isActive }) =>
+                          `flex items-center gap-3 p-3 rounded-lg transition-colors ${
+                            isActive
+                              ? "bg-blue-100 text-blue-700 font-semibold"
+                              : "hover:bg-gray-700 hover:text-white"
+                          }`
+                        }>
+                        <ShieldUser size={22} />
+
+                        <span>Users Management</span>
+                      </NavLink>
+                    </li>
+                  </>
+                )}
 
                 <li>
                   <NavLink

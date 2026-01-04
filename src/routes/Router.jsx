@@ -17,6 +17,8 @@ import AboutUs from "../components/AboutUs/AboutUs";
 import BeProvider from "../components/BeProvider/BeProvider";
 import MyRequest from "../Services/MyRequest/MyRequest";
 import AllApplication from "../Services/AllApplication/AllApplication";
+import UsersManagement from "../admin/UsersManagement/UsersManagement";
+import AdminRoute from "./AdminRoute/AdminRoute";
 
 export const router = createBrowserRouter([
   {
@@ -102,6 +104,14 @@ export const router = createBrowserRouter([
       {
         path: "all-applications",
         element: <AllApplication />,
+      },
+      {
+        path: "users-management",
+        element: (
+          <AdminRoute>
+            <UsersManagement />
+          </AdminRoute>
+        ),
       },
 
       {
