@@ -137,20 +137,22 @@ const DashboardLayout = () => {
                   </li>
                 </>
 
-                <li>
-                  <NavLink
-                    to="/dashboard/my-request"
-                    className={({ isActive }) =>
-                      `flex items-center gap-3 p-3 rounded-lg transition-colors ${
-                        isActive
-                          ? "bg-blue-100 text-blue-700 font-semibold"
-                          : "hover:bg-gray-700 hover:text-white"
-                      }`
-                    }>
-                    <ClipboardList />
-                    <span>My Request</span>
-                  </NavLink>
-                </li>
+                <>
+                  <li>
+                    <NavLink
+                      to="/dashboard/my-request"
+                      className={({ isActive }) =>
+                        `flex items-center gap-3 p-3 rounded-lg transition-colors ${
+                          isActive
+                            ? "bg-blue-100 text-blue-700 font-semibold"
+                            : "hover:bg-gray-700 hover:text-white"
+                        }`
+                      }>
+                      <ClipboardList />
+                      <span>My Request</span>
+                    </NavLink>
+                  </li>
+                </>
 
                 {role === "admin" && (
                   <>

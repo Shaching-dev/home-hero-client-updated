@@ -28,7 +28,7 @@ const UsersManagement = () => {
       cancelButtonColor: "#6b7280", // gray
     }).then((result) => {
       if (result.isConfirmed) {
-        axiosSecure.patch(`users/${user._id}`, roleInfo).then((res) => {
+        axiosSecure.patch(`/users/${user?._id}/role`, roleInfo).then((res) => {
           if (res.data.modifiedCount) {
             Swal.fire({
               title: "Approved!",
@@ -57,7 +57,7 @@ const UsersManagement = () => {
       cancelButtonColor: "#6b7280", // gray
     }).then((result) => {
       if (result.isConfirmed) {
-        axiosSecure.patch(`users/${user._id}`, roleInfo).then((res) => {
+        axiosSecure.patch(`/users/${user?._id}/role`, roleInfo).then((res) => {
           if (res.data.modifiedCount) {
             Swal.fire({
               title: "Removed!",
@@ -74,7 +74,9 @@ const UsersManagement = () => {
 
   return (
     <div>
-      <h3>User management {users.length} </h3>
+      <h3 className="text-3xl my-5 font-bold text-center">
+        Total Users <span className="text-primary"> {users.length}</span>{" "}
+      </h3>
 
       <div>
         <div className="overflow-x-auto">

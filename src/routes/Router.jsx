@@ -103,7 +103,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "all-applications",
-        element: <AllApplication />,
+        element: (
+          <AdminRoute>
+            <AllApplication />
+          </AdminRoute>
+        ),
       },
       {
         path: "users-management",

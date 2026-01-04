@@ -15,10 +15,12 @@ const Profile = () => {
     queryKey: ["userProfile", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
-      const res = await axiosSecure.get(`/users?email=${user?.email}`);
+      const res = await axiosSecure.get(`/profile?email=${user?.email}`);
       return res.data;
     },
   });
+
+  // console.log(profile);
 
   if (isLoading)
     return <div className="text-center p-10">Loading Profile...</div>;

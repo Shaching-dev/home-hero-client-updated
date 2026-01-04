@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import useAuth from "../useAuth/useAuth";
 
 const axiosSecure = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: "https://home-hero-server-updated.vercel.app",
 });
 
 const useAxiosSecure = () => {
