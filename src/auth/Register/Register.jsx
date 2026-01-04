@@ -7,6 +7,7 @@ import { HashLoader } from "react-spinners";
 
 import SocialLogin from "../SocialLogin/SocialLogin";
 import useAuth from "../../hooks/useAuth/useAuth";
+import useAxiosSecure from "../../hooks/useAxiosSecure/useAxiosSecure";
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -16,6 +17,7 @@ const Register = () => {
   const { registerUser, updateUserProfile } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
+  const axiosSecure = useAxiosSecure();
 
   const passwordPattern =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}[\]:;<>,.?~\-=/\\]).{6,}$/;
@@ -41,11 +43,9 @@ const Register = () => {
   /* ---------- Register Handler ---------- */
   const handleRegister = (data) => {
     setBtnLoading(true);
-
     const imageFile = data.profilePhoto[0];
     const formData = new FormData();
     formData.append("image", imageFile);
-
     const imageAPI = `https://api.imgbb.com/1/upload?key=${
       import.meta.env.VITE_image_api_key
     }`;
@@ -54,12 +54,26 @@ const Register = () => {
       .then(() => axios.post(imageAPI, formData))
       .then((res) => {
         const photoURL = res.data.data.url;
+
+        // saving usersinfo in the db
+
+        const userInfo = {
+          displayName: data.name,
+          photoURL: photoURL,
+          email: data.email,
+        };
+
+        axiosSecure.post("/users", userInfo).then((res) => {
+          if (res.data.insertedId) {
+            console.log("user created in the db");
+          }
+        });
+
         return updateUserProfile({
           displayName: data.name,
           photoURL,
         });
       })
-
       .then(() => {
         navigate(location?.state || "/");
       })

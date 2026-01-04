@@ -34,7 +34,7 @@ const MyServices = () => {
       confirmButtonText: "Yes, cancel it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        axiosSecure.delete(`/bookings/${id}`).then(() => {
+        axiosSecure.delete(`/my-services/${id}`).then(() => {
           Swal.fire(
             "Cancelled!",
             "Your booking has been cancelled.",

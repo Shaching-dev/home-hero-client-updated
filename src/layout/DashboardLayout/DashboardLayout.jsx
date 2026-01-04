@@ -11,8 +11,9 @@ import { GoTasklist } from "react-icons/go";
 import { CgProfile } from "react-icons/cg";
 import { AiFillCheckCircle } from "react-icons/ai";
 import { FiTrendingUp } from "react-icons/fi";
-import { MdPayment, MdPayments } from "react-icons/md";
+import { MdPayment, MdPayments, MdRequestQuote } from "react-icons/md";
 import Container from "../../components/Container/Container";
+import { ClipboardList } from "lucide-react";
 
 const DashboardLayout = () => {
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
@@ -135,6 +136,36 @@ const DashboardLayout = () => {
                     </NavLink>
                   </li>
                 </>
+
+                <li>
+                  <NavLink
+                    to="/dashboard/my-request"
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 p-3 rounded-lg transition-colors ${
+                        isActive
+                          ? "bg-blue-100 text-blue-700 font-semibold"
+                          : "hover:bg-gray-700 hover:text-white"
+                      }`
+                    }>
+                    <ClipboardList />
+                    <span>My Request</span>
+                  </NavLink>
+                </li>
+
+                <li>
+                  <NavLink
+                    to="/dashboard/all-applications"
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 p-3 rounded-lg transition-colors ${
+                        isActive
+                          ? "bg-blue-100 text-blue-700 font-semibold"
+                          : "hover:bg-gray-700 hover:text-white"
+                      }`
+                    }>
+                    <MdRequestQuote size={22} />
+                    <span>All Applications</span>
+                  </NavLink>
+                </li>
 
                 <li>
                   <NavLink

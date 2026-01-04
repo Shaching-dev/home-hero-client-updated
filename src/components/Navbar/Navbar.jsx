@@ -3,6 +3,7 @@ import { Link, NavLink } from "react-router";
 import Logo from "../Logo/Logo";
 import Container from "../Container/Container";
 import {
+  BriefcaseMedical,
   LayoutDashboard,
   MessageCirclePlus,
   Store,
@@ -43,6 +44,12 @@ const Navbar = () => {
         to="/services">
         <Wrench size={22} />
         Services
+      </NavLink>
+      <NavLink
+        className="flex items-center text-black gap-2 px-3 py-2 rounded-md  transition"
+        to="/provider">
+        <BriefcaseMedical size={22} />
+        Be a Provider
       </NavLink>
 
       <NavLink

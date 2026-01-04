@@ -2,18 +2,32 @@ import React, { useState } from "react";
 import useAuth from "../../hooks/useAuth/useAuth";
 import { useLocation, useNavigate } from "react-router";
 import { HashLoader } from "react-spinners";
+import useAxiosSecure from "../../hooks/useAxiosSecure/useAxiosSecure";
 
 const SocialLogin = () => {
   const [btnLoading, setBtnLoading] = useState(false);
   const { signInWithGoogle } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
+  const axiosSecure = useAxiosSecure();
   const handleSignInWithGoogle = () => {
     setBtnLoading(true);
 
     signInWithGoogle()
       .then((result) => {
         console.log(result.user);
+
+        const userInfo = {
+          displayName: result.user.displayName,
+          photoURL: result.user.photoURL,
+          email: result.user.email,
+        };
+        axiosSecure.post("/users", userInfo).then((res) => {
+          if (res.data.insertedId) {
+            console.log("users stored in the db");
+          }
+        });
+
         setTimeout(() => {
           navigate(location?.state || "/");
         }, 1000);

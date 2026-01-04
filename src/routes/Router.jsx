@@ -14,6 +14,9 @@ import ServiceDetails from "../Services/ServiceDetails.jsx/ServiceDetails";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import DashboardLayout from "../layout/DashboardLayout/DashboardLayout";
 import AboutUs from "../components/AboutUs/AboutUs";
+import BeProvider from "../components/BeProvider/BeProvider";
+import MyRequest from "../Services/MyRequest/MyRequest";
+import AllApplication from "../Services/AllApplication/AllApplication";
 
 export const router = createBrowserRouter([
   {
@@ -28,6 +31,15 @@ export const router = createBrowserRouter([
       {
         path: "/services",
         Component: Services,
+      },
+
+      {
+        path: "/provider",
+        element: (
+          <PrivateRoute>
+            <BeProvider />
+          </PrivateRoute>
+        ),
       },
 
       {
@@ -82,6 +94,14 @@ export const router = createBrowserRouter([
       {
         path: "my-services",
         element: <MyServices />,
+      },
+      {
+        path: "my-request",
+        element: <MyRequest />,
+      },
+      {
+        path: "all-applications",
+        element: <AllApplication />,
       },
 
       {
